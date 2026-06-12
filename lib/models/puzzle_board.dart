@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import '../utils/game_logic.dart';
 
 class PuzzleBoard extends ChangeNotifier {
-  late List<int> tiles;
-  late int gridSize;
+  List<int> tiles = [];
+  int gridSize = 3;
   int moves = 0;
   int timeElapsed = 0;
   bool isGameComplete = false;
-  String difficulty = 'Easy'; // Easy: 3x3, Medium: 4x4, Hard: 5x5
+  String difficulty = 'Easy';
 
   PuzzleBoard() {
     _initializeGame();
@@ -30,12 +30,19 @@ class PuzzleBoard extends ChangeNotifier {
   void moveTile(int index) {
     if (isGameComplete) return;
 
-    final emptyIndex = tiles.indexOf(tiles.length - 1);
-    if (GameLogic.isAdjacent(index, emptyIndex, gridSize)) {
+    int emptyIndex = -1;
+    for (int i = 0; i < tiles.length; i++) {
+      if (tiles[i] == tiles.length - 1) {
+        emptyIndex = i;
+        break;
+      }
+    }
+
+    if (emptyIndex != -1 && GameLogic.isAdjacent(index, emptyIndex, gridSize)) {
       tiles[emptyIndex] = tiles[index];
       tiles[index] = tiles.length - 1;
       moves++;
-      
+
       if (GameLogic.isSolved(tiles)) {
         isGameComplete = true;
       }
@@ -56,5 +63,9 @@ class PuzzleBoard extends ChangeNotifier {
   void incrementTime() {
     timeElapsed++;
     notifyListeners();
+  }
+
+  void resetGame() {
+    _initializeGame();
   }
 }
