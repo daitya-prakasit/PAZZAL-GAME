@@ -10,7 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   provider: ^6.0.0
-  confetti_controller: ^0.1.0
+  confetti: ^0.7.0   # 👈 Yahan maine sahi naam likh diya hai
   shake: ^2.2.0
 
 dev_dependencies:
